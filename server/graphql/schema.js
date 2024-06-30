@@ -1,25 +1,19 @@
-import {
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLBoolean,
-  GraphQLList,
-  GraphQLNonNull,
-} from "graphql";
-import { Task } from "../models/task";
+const { GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLList, GraphQLNonNull } = require('graphql');
+const Task = require('../models/task');
 
-// Define the Task type
+// Define the TaskType
 const TaskType = new GraphQLObjectType({
-  name: "Task",
+  name: 'Task',
   fields: {
-    id: { type: GraphQLString },
+    _id: { type: GraphQLString },
     description: { type: GraphQLString },
     completed: { type: GraphQLBoolean },
   },
 });
 
-// define the rootQuery
+// Define the RootQuery
 const RootQuery = new GraphQLObjectType({
-  name: "Query",
+  name: 'Query',
   fields: {
     tasks: {
       type: new GraphQLList(TaskType),
@@ -28,9 +22,9 @@ const RootQuery = new GraphQLObjectType({
   },
 });
 
-// define the root mutation
+// Define the RootMutation
 const RootMutation = new GraphQLObjectType({
-  name: "Mutation",
+  name: 'Mutation',
   fields: {
     createTask: {
       type: TaskType,
@@ -48,19 +42,18 @@ const RootMutation = new GraphQLObjectType({
     updateTask: {
       type: TaskType,
       args: {
-        id: { type: new GraphQLNonNull(GraphQLString) },
+        _id: { type: new GraphQLNonNull(GraphQLString) },
         completed: { type: GraphQLBoolean },
       },
       resolve: (_, args) => {
-        return Task.findByIdAndUpdate(
-          args.id,
-          { completed: args.completed },
-          { new: true }
-        );
+        return Task.findByIdAndUpdate(args._id, { completed: args.completed }, { new: true });
       },
     },
   },
 });
 
-
-export default {TaskType, RootQuery, RootMutation}
+module.exports = {
+  TaskType,
+  RootQuery,
+  RootMutation,
+};
