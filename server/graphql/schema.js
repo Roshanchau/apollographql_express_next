@@ -1,4 +1,4 @@
-const { GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLList, GraphQLNonNull } = require('graphql');
+const { GraphQLObjectType, GraphQLString, GraphQLBoolean, GraphQLList,GraphQLSchema, GraphQLNonNull } = require('graphql');
 const Task = require('../models/task');
 
 // Define the TaskType
@@ -52,8 +52,7 @@ const RootMutation = new GraphQLObjectType({
   },
 });
 
-module.exports = {
-  TaskType,
-  RootQuery,
-  RootMutation,
-};
+module.exports = new GraphQLSchema({
+  query: RootQuery,
+  mutation: RootMutation,
+});
